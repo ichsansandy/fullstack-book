@@ -30,7 +30,7 @@ class UserRepositoryPostgres extends UserRepository {
   async addUser(registerUser) {
     const { name, password } = registerUser;
     const number = await this.getTotalUsers();
-    const newNumber = number + 1;
+    const newNumber = Number(number) + 1;
     const code = ('000' + newNumber).slice(-3);
     const id = `M${code}`;
 
