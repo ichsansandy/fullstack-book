@@ -20,6 +20,10 @@ exports.up = (pgm) => {
     },
   });
 
+  pgm.addConstraint('rent', 'unique_member_book', {
+    unique: ['member_code', 'book_code'],
+});
+
   pgm.addConstraint(
     'rent',
     'fk_rent.member_code_users.code',
@@ -34,6 +38,7 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
+  pgm.dropConstraint('rent', 'unique_member_book');
   pgm.dropConstraint('rent', 'fk_rent.member_code_users.code');
   pgm.dropConstraint('rent', 'fk_rent.book_code_books.code');
 
