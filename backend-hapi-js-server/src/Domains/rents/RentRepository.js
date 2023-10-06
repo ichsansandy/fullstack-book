@@ -1,9 +1,9 @@
 class RentRepository {
-  async createRent(userCode, bookCode) {
+  async createRent(memberCode, bookCode) {
     throw new Error('RENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 
-  async deleteRent(userCode, bookCode) {
+  async deleteRent(memberCode, bookCode) {
     throw new Error('RENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 }
