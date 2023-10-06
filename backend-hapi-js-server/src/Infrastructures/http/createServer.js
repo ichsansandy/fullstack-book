@@ -1,4 +1,5 @@
 const Hapi = require('@hapi/hapi');
+const HapiCors = require('hapi-cors');
 const Jwt = require('@hapi/jwt');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
@@ -31,7 +32,7 @@ const createServer = async (container) => {
     validate: (artifacts) => ({
       isValid: true,
       credentials: {
-        id: artifacts.decoded.payload.id,
+        code: artifacts.decoded.payload.code,
       },
     }),
   });
@@ -55,9 +56,17 @@ const createServer = async (container) => {
     },
   ]);
 
+  await server.register({
+    plugin: HapiCors,
+    options: {
+      origins: ['http://localhost:5173'], // Specify the allowed origins
+    },
+  });
+
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
     const { response } = request;
+    console.log(response);
     if (response instanceof Error) {
       // bila response tersebut error, tangani sesuai kebutuhan
       const translatedError = DomainErrorTranslator.translate(response);

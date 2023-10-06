@@ -9,7 +9,7 @@ const routes = (handler) => [
   },
   {
     method: 'GET',
-    path: '/books/rented',
+    path: '/books/rent',
     handler: handler.getRentedBooksHandler,
     options: {
       auth: 'book_jwt',

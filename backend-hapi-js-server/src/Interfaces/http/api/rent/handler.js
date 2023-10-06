@@ -10,7 +10,7 @@ class RentHandler {
 
   async rentBookHandler(request) {
     const rentBookUseCase = this._container.getInstance(RentBookUseCase.name);
-    const { id: memberCode } = request.auth.credentials;
+    const { code: memberCode } = request.auth.credentials;
     const { bookCode } = request.payload;
     await rentBookUseCase.execute({ memberCode, bookCode });
     

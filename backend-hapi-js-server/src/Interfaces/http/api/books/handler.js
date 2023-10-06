@@ -1,3 +1,4 @@
+const BookRepository = require('../../../../Domains/books/BookRepository');
 const BookRepositoryPostgres = require('../../../../Infrastructures/repository/BookRepositoryPostgres');
 
 class BooksHandler {
@@ -8,8 +9,8 @@ class BooksHandler {
   }
 
   async getAvailableBooksHandler(request, h) {
-    const bookRepositoryPostgres = this._container.getInstance(BookRepositoryPostgres.name);
-    const { id: memberCode } = request.auth.credentials;
+    const bookRepositoryPostgres = this._container.getInstance(BookRepository.name);
+    const { code: memberCode } = request.auth.credentials;
     const booksAvailable = await bookRepositoryPostgres.getAllAvailableBooks(memberCode);
 
     const response = h.response({
