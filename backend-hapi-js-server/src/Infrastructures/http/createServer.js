@@ -1,8 +1,11 @@
 const Hapi = require('@hapi/hapi');
+const Jwt = require('@hapi/jwt');
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
+const books = require('../../Interfaces/http/api/books');
+const rent = require('../../Interfaces/http/api/rent');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -12,11 +15,42 @@ const createServer = async (container) => {
 
   await server.register([
     {
+      plugin: Jwt,
+    },
+  ]);
+
+  // mendefinisikan strategy autentikasi jwt
+  server.auth.strategy('book_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
+  });
+
+  await server.register([
+    {
       plugin: users,
       options: { container },
     },
     {
       plugin: authentications,
+      options: { container },
+    },
+    {
+      plugin: books,
+      options: { container },
+    },
+    {
+      plugin: rent,
       options: { container },
     },
   ]);

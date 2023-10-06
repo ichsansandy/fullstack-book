@@ -13,6 +13,10 @@ const UserRepository = require('../Domains/users/UserRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const RentRepository = require('../Domains/rents/RentRepository');
+const RentRepositoryPostgres = require('./repository/RentRepositoryPostgres');
+const BookRepository = require('../Domains/books/BookRepository');
+const BookRepositoryPostgres = require('./repository/BookRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -23,6 +27,8 @@ const AuthenticationRepository = require('../Domains/authentications/Authenticat
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
+const RentBookUseCase = require('../Applications/use_case/RentBookUseCase');
+const ReturnBookUseCase = require('../Applications/use_case/ReturnBookUseCase');
 
 // creating container
 const container = createContainer();
@@ -69,6 +75,28 @@ container.register([
       dependencies: [
         {
           concrete: Jwt.token,
+        },
+      ],
+    },
+  },
+  {
+    key: BookRepository.name,
+    Class: BookRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: RentRepository.name,
+    Class: RentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
         },
       ],
     },
@@ -145,6 +173,40 @@ container.register([
         {
           name: 'authenticationTokenManager',
           internal: AuthenticationTokenManager.name,
+        },
+      ],
+    },
+  },
+  {
+    key: RentBookUseCase.name,
+    Class: RentBookUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'bookRepository',
+          internal: BookRepository.name,
+        },
+        {
+          name: 'rentRepository',
+          internal: RentRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: ReturnBookUseCase.name,
+    Class: ReturnBookUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'bookRepository',
+          internal: BookRepository.name,
+        },
+        {
+          name: 'rentRepository',
+          internal: RentRepository.name,
         },
       ],
     },

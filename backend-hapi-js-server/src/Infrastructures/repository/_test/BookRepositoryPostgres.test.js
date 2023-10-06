@@ -45,7 +45,7 @@ describe('BookRepositoryPostgres', () => {
     await pool.end();
   });
 
-  describe('getAllRentedBooks', () => {
+  describe('getAllAvailableBooks', () => {
     it('should show all book with stock more than 1 correctly', async () => {
       // Arrange
       const bookRepositoryPostgres = new BookRepositoryPostgres(pool);

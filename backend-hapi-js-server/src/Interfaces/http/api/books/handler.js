@@ -24,12 +24,12 @@ class BooksHandler {
   async getRentedBooksHandler(request, h) {
     const bookRepositoryPostgres = this._container.getInstance(BookRepositoryPostgres.name);
     const { id: memberCode } = request.auth.credentials;
-    const booksAvailable = await bookRepositoryPostgres.getAllRentedBooks(memberCode);
+    const booksRented = await bookRepositoryPostgres.getAllRentedBooks(memberCode);
 
     const response = h.response({
       status: 'success',
       data: {
-        booksAvailable,
+        booksRented,
       },
     });
     return response;
