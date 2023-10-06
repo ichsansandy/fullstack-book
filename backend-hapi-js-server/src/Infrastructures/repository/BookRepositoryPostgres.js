@@ -7,8 +7,24 @@ class BookRepositoryPostgres extends BookRepository {
     this._pool = pool;
   }
 
-  async getAllAvailableBooks() {
-    const result = await this._pool.query('SELECT * FROM books WHERE stock > 0');
+  async getAllAvailableBooks(memberCode) {
+    const query = {
+      text: 'SELECT * FROM books WHERE stock > 0 AND NOT EXISTS ( SELECT 1 FROM rent WHERE rent.member_code = $1 AND rent.book_code = books.code )',
+      values: [memberCode],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
+
+  async getAllRentedBooks(memberCode) {
+    const query = {
+      text: ' SELECT books.* FROM books JOIN rent ON books.code = rent.book_code WHERE rent.member_code = $1',
+      values: [memberCode],
+    };
+
+    const result = await this._pool.query(query);
 
     return result.rows;
   }

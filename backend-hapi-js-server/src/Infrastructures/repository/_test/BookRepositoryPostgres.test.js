@@ -1,6 +1,8 @@
 const BookRepositoryPostgres = require('../BookRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
 const BooksTableTestHelper = require('../../../../tests/BooksTableTestHelper');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const RentTableTestHelper = require('../../../../tests/RentTableTestHelper');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 
 describe('BookRepositoryPostgres', () => {
@@ -25,26 +27,49 @@ describe('BookRepositoryPostgres', () => {
         stock: 0,
       },
     ]);
+
+    await UsersTableTestHelper.addUser({
+      code: 'M001',
+      name: 'Tester',
+    });
+
   });
 
   afterEach(async () => {
     await BooksTableTestHelper.cleanTable();
+    await RentTableTestHelper.cleanTable();
+    await UsersTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
     await pool.end();
   });
 
-  describe('getAllAvailableBooks', () => {
+  describe('getAllRentedBooks', () => {
     it('should show all book with stock more than 1 correctly', async () => {
       // Arrange
       const bookRepositoryPostgres = new BookRepositoryPostgres(pool);
 
       // Action
-      const books = await bookRepositoryPostgres.getAllAvailableBooks();
+      const books = await bookRepositoryPostgres.getAllAvailableBooks('M002');
 
       // Assert
       expect(books).toHaveLength(2);
+    });
+  });
+
+  describe('getAllRentedBooks', () => {
+    it('should show all book with stock more than 1 correctly', async () => {
+      // Arrange
+      const bookRepositoryPostgres = new BookRepositoryPostgres(pool);
+      await RentTableTestHelper.addRent('M001', 'JK-45');
+
+      // Action
+      const books = await bookRepositoryPostgres.getAllRentedBooks('M001');
+
+      // Assert
+      expect(books).toHaveLength(1);
+      expect(books[0].code).toEqual('JK-45');
     });
   });
 

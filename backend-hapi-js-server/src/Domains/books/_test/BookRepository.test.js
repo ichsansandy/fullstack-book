@@ -7,6 +7,7 @@ describe('BookRepository interface', () => {
 
     // Action and Assert
     await expect(bookRepository.updateBookStock('', '')).rejects.toThrowError('BOOK_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-    await expect(bookRepository.getAllAvailableBooks()).rejects.toThrowError('BOOK_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(bookRepository.getAllAvailableBooks('')).rejects.toThrowError('BOOK_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(bookRepository.getAllRentedBooks('')).rejects.toThrowError('BOOK_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
 });
