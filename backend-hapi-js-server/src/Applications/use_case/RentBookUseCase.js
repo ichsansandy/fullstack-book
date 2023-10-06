@@ -1,4 +1,4 @@
-class CreateRentUseCase {
+class RentBookUseCase {
   constructor({ bookRepository, rentRepository }) {
     this._bookRepository = bookRepository;
     this._rentRepository = rentRepository;
@@ -10,4 +10,4 @@ class CreateRentUseCase {
   }
 }
 
-module.exports = CreateRentUseCase;
+module.exports = RentBookUseCase;
