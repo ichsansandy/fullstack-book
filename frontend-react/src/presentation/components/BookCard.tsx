@@ -1,10 +1,6 @@
 import { type Book, type Action } from '../../data/types';
 
 export default function BookCard({ book, action }: { book: Book; action: Action }) {
-  const rentBook = async (book.code) => {
-    
-  }
-  
   return (
     <div
       id={book.code}
@@ -15,8 +11,10 @@ export default function BookCard({ book, action }: { book: Book; action: Action 
       <h5 className="text-sm">{book.author}</h5>
       <button
         type="button"
-        className={`${action === 'available' ? 'bg-green-400' : 'bg-red-300'} mt-4 px-7 py-2 rounded-3xl  w-fit place-self-center hover:scale-110 transition-all`}
-        onClick={}
+        className={`${
+          action === 'available' ? 'bg-green-400' : 'bg-red-300'
+        } mt-4 px-7 py-2 rounded-3xl  w-fit place-self-center hover:scale-110 transition-all`}
+ 
       >
         {action === 'available' ? 'Rent' : 'Return'}
       </button>

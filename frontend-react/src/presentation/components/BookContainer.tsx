@@ -26,7 +26,7 @@ export default function BookContainer({ action }: { action: Action }) {
   return (
     <div className={`${action === 'available' ? 'bg-purple-200' : 'bg-slate-100'} w-full p-4 rounded-lg flex flex-col`}>
       <h1 className="text-3xl mb-7">{action === 'available' ? 'Book Available for Rent' : 'Your Rent'}</h1>
-      <div className="flex flex-wrap items-center justify-center gap-3">
+      <div className="flex flex-wrap justify-center gap-3">
         {Array.isArray(bookList) && bookList.length === 0 ? (
           <div className="text-slate-400">You don't have any books {action}</div>
         ) : (
